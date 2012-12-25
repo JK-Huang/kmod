@@ -82,28 +82,28 @@ static int do_insmod(int argc, char *argv[])
 			break;
 		case 'h':
 			help();
-			return EXIT_SUCCESS;
+			return 0;
 		case 'V':
 			puts(PACKAGE " version " VERSION);
-			return EXIT_SUCCESS;
+			return 0;
 		case '?':
-			return EXIT_FAILURE;
+			return 1;
 		default:
 			ERR("unexpected getopt_long() value '%c'.\n",
 				c);
-			return EXIT_FAILURE;
+			return 1;
 		}
 	}
 
 	if (optind >= argc) {
 		ERR("missing filename.\n");
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	filename = argv[optind];
 	if (strcmp(filename, "-") == 0) {
 		ERR("this tool does not support loading from stdin!\n");
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	for (i = optind + 1; i < argc; i++) {
@@ -112,7 +112,7 @@ static int do_insmod(int argc, char *argv[])
 		if (tmp == NULL) {
 			ERR("out of memory\n");
 			free(opts);
-			return EXIT_FAILURE;
+			return 1;
 		}
 		opts = tmp;
 		if (optslen > 0) {
@@ -128,7 +128,7 @@ static int do_insmod(int argc, char *argv[])
 	if (!ctx) {
 		ERR("kmod_new() failed!\n");
 		free(opts);
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	err = kmod_module_new_from_path(ctx, filename, &mod);
@@ -148,7 +148,7 @@ static int do_insmod(int argc, char *argv[])
 end:
 	kmod_unref(ctx);
 	free(opts);
-	return err >= 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+	return err >= 0 ? 0 : 1;
 }
 
 const struct kmod_cmd kmod_cmd_compat_insmod = {

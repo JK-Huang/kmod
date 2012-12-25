@@ -36,7 +36,7 @@ static __noreturn int modprobe_show_depends(const struct test *t)
 	};
 
 	test_spawn_prog(progname, args);
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 static DEFINE_TEST(modprobe_show_depends,
 	.description = "check if output for modprobe --show-depends is correct for loaded modules",
@@ -58,7 +58,7 @@ static __noreturn int modprobe_show_depends2(const struct test *t)
 	};
 
 	test_spawn_prog(progname, args);
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 static DEFINE_TEST(modprobe_show_depends2,
 	.description = "check if output for modprobe --show-depends is correct",
@@ -80,7 +80,7 @@ static __noreturn int modprobe_builtin(const struct test *t)
 	};
 
 	test_spawn_prog(progname, args);
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 static DEFINE_TEST(modprobe_builtin,
 	.description = "check if modprobe return 0 for builtin",
@@ -99,7 +99,7 @@ static __noreturn int modprobe_softdep_loop(const struct test *t)
 	};
 
 	test_spawn_prog(progname, args);
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 static DEFINE_TEST(modprobe_softdep_loop,
 	.description = "check if modprobe breaks softdep loop",
@@ -119,7 +119,7 @@ static __noreturn int modprobe_install_cmd_loop(const struct test *t)
 	};
 
 	test_spawn_prog(progname, args);
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 static DEFINE_TEST(modprobe_install_cmd_loop,
 	.description = "check if modprobe breaks install-commands loop",

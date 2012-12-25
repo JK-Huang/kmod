@@ -38,7 +38,7 @@ static __noreturn int depmod_modules_order_for_compressed(const struct test *t)
 	};
 
 	test_spawn_prog(progname, args);
-	exit(EXIT_FAILURE);
+	exit(1);
 }
 static DEFINE_TEST(depmod_modules_order_for_compressed,
 	.description = "check if depmod let aliases in right order when using compressed modules",

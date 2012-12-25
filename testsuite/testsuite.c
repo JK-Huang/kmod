@@ -150,7 +150,7 @@ static int test_spawn_test(const struct test *t)
 	execv(progname, (char *const *) args);
 
 	ERR("failed to spawn %s for %s: %m\n", progname, t->name);
-	return EXIT_FAILURE;
+	return 1;
 }
 
 static int test_run_spawned(const struct test *t)
@@ -158,7 +158,7 @@ static int test_run_spawned(const struct test *t)
 	int err = t->func(t);
 	exit(err);
 
-	return EXIT_FAILURE;
+	return 1;
 }
 
 int test_spawn_prog(const char *prog, const char *const args[])
@@ -167,7 +167,7 @@ int test_spawn_prog(const char *prog, const char *const args[])
 
 	ERR("failed to spawn %s\n", prog);
 	ERR("did you forget to build tools?\n");
-	return EXIT_FAILURE;
+	return 1;
 }
 
 static void test_export_environ(const struct test *t)
@@ -227,7 +227,7 @@ static inline int test_run_child(const struct test *t, int fdout[2],
 		close(fdout[0]);
 		if (dup2(fdout[1], STDOUT_FILENO) < 0) {
 			ERR("could not redirect stdout to pipe: %m\n");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 	}
 
@@ -235,7 +235,7 @@ static inline int test_run_child(const struct test *t, int fdout[2],
 		close(fderr[0]);
 		if (dup2(fderr[1], STDERR_FILENO) < 0) {
 			ERR("could not redirect stdout to pipe: %m\n");
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 	}
 
@@ -248,18 +248,18 @@ static inline int test_run_child(const struct test *t, int fdout[2],
 
 		if (stat(stamp, &stampst) != 0) {
 			ERR("could not stat %s\n - %m", stamp);
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 
 		if (stat(rootfs, &rootfsst) != 0) {
 			ERR("could not stat %s\n - %m", rootfs);
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 
 		if (stat_mstamp(&rootfsst) > stat_mstamp(&stampst)) {
 			ERR("rootfs %s is dirty, please run 'make rootfs' before runnning this test\n",
 								rootfs);
-			exit(EXIT_FAILURE);
+			exit(1);
 		}
 	}
 
@@ -559,7 +559,7 @@ static inline int test_run_parent(const struct test *t, int fdout[2],
 		pid = wait(&err);
 		if (pid == -1) {
 			ERR("error waitpid(): %m\n");
-			return EXIT_FAILURE;
+			return 1;
 		}
 	} while (!WIFEXITED(err) && !WIFSIGNALED(err));
 
@@ -573,7 +573,7 @@ static inline int test_run_parent(const struct test *t, int fdout[2],
 	} else if (WIFSIGNALED(err)) {
 		ERR("'%s' [%u] terminated by signal %d (%s)\n", t->name, pid,
 				WTERMSIG(err), strsignal(WTERMSIG(err)));
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	if (matchout)
@@ -589,7 +589,7 @@ static inline int test_run_parent(const struct test *t, int fdout[2],
 				ERR("%sFAILED%s: exit ok but outputs do not match: %s\n",
 					ANSI_HIGHLIGHT_RED_ON, ANSI_HIGHLIGHT_OFF,
 					t->name);
-				err = EXIT_FAILURE;
+				err = 1;
 			}
 		} else
 			ERR("%sFAILED%s: %s\n",
@@ -601,7 +601,7 @@ static inline int test_run_parent(const struct test *t, int fdout[2],
 				LOG("%sUNEXPECTED PASS%s: %s\n",
 					ANSI_HIGHLIGHT_RED_ON, ANSI_HIGHLIGHT_OFF,
 					t->name);
-				err = EXIT_FAILURE;
+				err = 1;
 			} else
 				LOG("%sEXPECTED FAIL%s: exit ok but outputs do not match: %s\n",
 					ANSI_HIGHLIGHT_GREEN_ON, ANSI_HIGHLIGHT_OFF,
@@ -610,7 +610,7 @@ static inline int test_run_parent(const struct test *t, int fdout[2],
 			ERR("%sEXPECTED FAIL%s: %s\n",
 					ANSI_HIGHLIGHT_GREEN_ON, ANSI_HIGHLIGHT_OFF,
 					t->name);
-			err = EXIT_SUCCESS;
+			err = 0;
 		}
 	}
 
@@ -653,25 +653,25 @@ int test_run(const struct test *t)
 	if (t->output.stdout != NULL) {
 		if (pipe(fdout) != 0) {
 			ERR("could not create out pipe for %s\n", t->name);
-			return EXIT_FAILURE;
+			return 1;
 		}
 	}
 
 	if (t->output.stderr != NULL) {
 		if (pipe(fderr) != 0) {
 			ERR("could not create err pipe for %s\n", t->name);
-			return EXIT_FAILURE;
+			return 1;
 		}
 	}
 
 	if (pipe(fdmonitor) != 0) {
 		ERR("could not create monitor pipe for %s\n", t->name);
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	if (prepend_path(t->path) < 0) {
 		ERR("failed to prepend '%s' to PATH\n", t->path);
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	LOG("running %s, in forked context\n", t->name);
@@ -680,7 +680,7 @@ int test_run(const struct test *t)
 	if (pid < 0) {
 		ERR("could not fork(): %m\n");
 		LOG("FAILED: %s\n", t->name);
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	if (pid > 0)

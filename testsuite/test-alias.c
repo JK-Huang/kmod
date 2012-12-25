@@ -55,7 +55,7 @@ static int alias_1(const struct test *t)
 		printf("\n");
 	}
 
-	return EXIT_SUCCESS;
+	return 0;
 }
 static DEFINE_TEST(alias_1,
 	.description = "check if alias_normalize does the right thing",

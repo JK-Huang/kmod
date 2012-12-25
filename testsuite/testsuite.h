@@ -138,7 +138,7 @@ int test_run(const struct test *t);
 			t = test_find(tests, argv[arg]);	\
 			if (t == NULL) {			\
 				fprintf(stderr, "could not find test %s\n", argv[arg]);\
-				exit(EXIT_FAILURE);		\
+				exit(1);		\
 			}					\
 								\
 			return test_run(t);			\
@@ -146,10 +146,10 @@ int test_run(const struct test *t);
 								\
 		for (i = 0; tests[i] != NULL; i++) {		\
 			if (test_run(tests[i]) != 0)		\
-				exit(EXIT_FAILURE);		\
+				exit(1);		\
 		}						\
 								\
-		exit(EXIT_SUCCESS);				\
+		exit(0);				\
 	}							\
 
 #define __noreturn __attribute__((noreturn))

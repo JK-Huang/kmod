@@ -123,15 +123,15 @@ static int do_rmmod(int argc, char *argv[])
 			break;
 		case 'h':
 			help();
-			return EXIT_SUCCESS;
+			return 0;
 		case 'V':
 			puts(PACKAGE " version " VERSION);
-			return EXIT_SUCCESS;
+			return 0;
 		case '?':
-			return EXIT_FAILURE;
+			return 1;
 		default:
 			ERR("unexpected getopt_long() value '%c'.\n", c);
-			return EXIT_FAILURE;
+			return 1;
 		}
 	}
 
@@ -139,14 +139,14 @@ static int do_rmmod(int argc, char *argv[])
 
 	if (optind >= argc) {
 		ERR("missing module name.\n");
-		r = EXIT_FAILURE;
+		r = 1;
 		goto done;
 	}
 
 	ctx = kmod_new(NULL, &null_config);
 	if (!ctx) {
 		ERR("kmod_new() failed!\n");
-		r = EXIT_FAILURE;
+		r = 1;
 		goto done;
 	}
 
@@ -188,7 +188,7 @@ next:
 done:
 	log_close();
 
-	return r == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+	return r == 0 ? 0 : 1;
 }
 
 const struct kmod_cmd kmod_cmd_compat_rmmod = {

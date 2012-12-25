@@ -33,11 +33,11 @@ static __noreturn int test_initlib(const struct test *t)
 
 	ctx = kmod_new(NULL, &null_config);
 	if (ctx == NULL)
-		exit(EXIT_FAILURE);
+		exit(1);
 
 	kmod_unref(ctx);
 
-	exit(EXIT_SUCCESS);
+	exit(0);
 }
 static DEFINE_TEST(test_initlib,
 		.description = "test if libkmod's init function work");
@@ -51,22 +51,22 @@ static __noreturn int test_insert(const struct test *t)
 
 	ctx = kmod_new(NULL, &null_config);
 	if (ctx == NULL)
-		exit(EXIT_FAILURE);
+		exit(1);
 
 	err = kmod_module_new_from_path(ctx, "/ext4-x86_64.ko", &mod);
 	if (err != 0) {
 		ERR("could not create module from path: %m\n");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 
 	err = kmod_module_insert_module(mod, 0, NULL);
 	if (err != 0) {
 		ERR("could not insert module: %m\n");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	kmod_unref(ctx);
 
-	exit(EXIT_SUCCESS);
+	exit(0);
 }
 static DEFINE_TEST(test_insert,
 	.description = "test if libkmod's insert_module returns ok",
@@ -85,22 +85,22 @@ static __noreturn int test_remove(const struct test *t)
 
 	ctx = kmod_new(NULL, &null_config);
 	if (ctx == NULL)
-		exit(EXIT_FAILURE);
+		exit(1);
 
 	err = kmod_module_new_from_name(ctx, "ext4", &mod);
 	if (err != 0) {
 		ERR("could not create module from name: %m\n");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 
 	err = kmod_module_remove_module(mod, 0);
 	if (err != 0) {
 		ERR("could not remove module: %m\n");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	kmod_unref(ctx);
 
-	exit(EXIT_SUCCESS);
+	exit(0);
 }
 static DEFINE_TEST(test_remove,
 	.description = "test if libkmod's remove_module returns ok",

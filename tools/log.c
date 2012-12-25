@@ -130,7 +130,7 @@ void log_printf(int prio, const char *fmt, ...)
 	free(msg);
 
 	if (prio <= LOG_CRIT)
-		exit(EXIT_FAILURE);
+		exit(1);
 }
 
 void log_setup_kmod_log(struct kmod_ctx *ctx, int priority)

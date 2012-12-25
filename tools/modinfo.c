@@ -401,21 +401,21 @@ static int do_modinfo(int argc, char *argv[])
 			break;
 		case 'h':
 			help();
-			return EXIT_SUCCESS;
+			return 0;
 		case 'V':
 			puts(PACKAGE " version " VERSION);
-			return EXIT_SUCCESS;
+			return 0;
 		case '?':
-			return EXIT_FAILURE;
+			return 1;
 		default:
 			ERR("unexpected getopt_long() value '%c'.\n", c);
-			return EXIT_FAILURE;
+			return 1;
 		}
 	}
 
 	if (optind >= argc) {
 		ERR("missing module or filename.\n");
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	if (root != NULL || kversion != NULL) {
@@ -425,7 +425,7 @@ static int do_modinfo(int argc, char *argv[])
 		if (kversion == NULL) {
 			if (uname(&u) < 0) {
 				ERR("uname() failed: %m\n");
-				return EXIT_FAILURE;
+				return 1;
 			}
 			kversion = u.release;
 		}
@@ -437,7 +437,7 @@ static int do_modinfo(int argc, char *argv[])
 	ctx = kmod_new(dirname, &null_config);
 	if (!ctx) {
 		ERR("kmod_new() failed!\n");
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	err = 0;
@@ -455,7 +455,7 @@ static int do_modinfo(int argc, char *argv[])
 	}
 
 	kmod_unref(ctx);
-	return err >= 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+	return err >= 0 ? 0 : 1;
 }
 
 const struct kmod_cmd kmod_cmd_compat_modinfo = {

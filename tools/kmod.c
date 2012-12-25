@@ -76,7 +76,7 @@ static int kmod_help(int argc, char *argv[])
 		}
 	}
 
-	return EXIT_SUCCESS;
+	return 0;
 }
 
 static const struct kmod_cmd kmod_cmd_help = {
@@ -101,15 +101,15 @@ static int handle_kmod_commands(int argc, char *argv[])
 		switch (c) {
 		case 'h':
 			kmod_help(argc, argv);
-			return EXIT_SUCCESS;
+			return 0;
 		case 'V':
 			puts("kmod version " VERSION);
-			return EXIT_SUCCESS;
+			return 0;
 		case '?':
-			return EXIT_FAILURE;
+			return 1;
 		default:
 			fprintf(stderr, "Error: unexpected getopt_long() value '%c'.\n", c);
-			return EXIT_FAILURE;
+			return 1;
 		}
 	}
 
@@ -136,7 +136,7 @@ static int handle_kmod_commands(int argc, char *argv[])
 
 fail:
 	kmod_help(argc, argv);
-	return EXIT_FAILURE;
+	return 1;
 }
 
 

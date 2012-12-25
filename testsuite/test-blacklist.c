@@ -46,7 +46,7 @@ static int blacklist_1(const struct test *t)
 
 	ctx = kmod_new(NULL, NULL);
 	if (ctx == NULL)
-		exit(EXIT_FAILURE);
+		exit(1);
 
 	for(name = names; *name; name++) {
 		err = kmod_module_new_from_name(ctx, *name, &mod);
@@ -83,13 +83,13 @@ static int blacklist_1(const struct test *t)
 	kmod_module_unref_list(list);
 	kmod_unref(ctx);
 
-	return EXIT_SUCCESS;
+	return 0;
 
 fail:
 	kmod_module_unref_list(list);
 fail_lookup:
 	kmod_unref(ctx);
-	return EXIT_FAILURE;
+	return 1;
 }
 static const struct test sblacklist_1 = {
 	.name = "blacklist_1",

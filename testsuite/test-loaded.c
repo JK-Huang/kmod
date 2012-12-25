@@ -36,13 +36,13 @@ static int loaded_1(const struct test *t)
 
 	ctx = kmod_new(NULL, &null_config);
 	if (ctx == NULL)
-		exit(EXIT_FAILURE);
+		exit(1);
 
 	err = kmod_module_new_from_loaded(ctx, &list);
 	if (err < 0) {
 		fprintf(stderr, "%s\n", strerror(-err));
 		kmod_unref(ctx);
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 
 	printf("Module                  Size  Used by\n");
@@ -76,7 +76,7 @@ static int loaded_1(const struct test *t)
 
 	kmod_unref(ctx);
 
-	return EXIT_SUCCESS;
+	return 0;
 }
 static DEFINE_TEST(loaded_1,
 	.description = "check if list of module is created",

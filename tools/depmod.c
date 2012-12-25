@@ -2538,11 +2538,11 @@ static int do_depmod(int argc, char *argv[])
 		case 'h':
 			help();
 			free(config_paths);
-			return EXIT_SUCCESS;
+			return 0;
 		case 'V':
 			puts(PACKAGE " version " VERSION);
 			free(config_paths);
-			return EXIT_SUCCESS;
+			return 0;
 		case '?':
 			goto cmdline_failed;
 		default:
@@ -2673,7 +2673,7 @@ done:
 	depmod_shutdown(&depmod);
 	cfg_free(&cfg);
 	free(config_paths);
-	return err >= 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+	return err >= 0 ? 0 : 1;
 
 cmdline_modules_failed:
 	depmod_shutdown(&depmod);
@@ -2684,7 +2684,7 @@ cmdline_failed:
 	cfg_free(&cfg);
 	free(config_paths);
 	free(root);
-	return EXIT_FAILURE;
+	return 1;
 }
 
 const struct kmod_cmd kmod_cmd_compat_depmod = {

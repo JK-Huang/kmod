@@ -45,12 +45,12 @@ static int from_name(const struct test *t)
 
 	ctx = kmod_new(NULL, &null_config);
 	if (ctx == NULL)
-		exit(EXIT_FAILURE);
+		exit(1);
 
 	for (p = modnames; p != NULL; p++) {
 		err = kmod_module_new_from_name(ctx, *p, &mod);
 		if (err < 0)
-			exit(EXIT_SUCCESS);
+			exit(0);
 
 		printf("modname: %s\n", kmod_module_get_name(mod));
 		kmod_module_unref(mod);
@@ -58,7 +58,7 @@ static int from_name(const struct test *t)
 
 	kmod_unref(ctx);
 
-	return EXIT_SUCCESS;
+	return 0;
 }
 static DEFINE_TEST(from_name,
 	.description = "check if module names are parsed correctly",
@@ -82,14 +82,14 @@ static int from_alias(const struct test *t)
 
 	ctx = kmod_new(NULL, NULL);
 	if (ctx == NULL)
-		exit(EXIT_FAILURE);
+		exit(1);
 
 	for (p = modnames; p != NULL; p++) {
 		struct kmod_list *l, *list = NULL;
 
 		err = kmod_module_new_from_lookup(ctx, *p, &list);
 		if (err < 0)
-			exit(EXIT_SUCCESS);
+			exit(0);
 
 		kmod_list_foreach(l, list) {
 			struct kmod_module *m;
@@ -103,7 +103,7 @@ static int from_alias(const struct test *t)
 
 	kmod_unref(ctx);
 
-	return EXIT_SUCCESS;
+	return 0;
 }
 static DEFINE_TEST(from_alias,
 	.description = "check if aliases are parsed correctly",

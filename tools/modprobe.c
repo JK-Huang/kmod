@@ -753,7 +753,7 @@ static int do_modprobe(int argc, char **orig_argv)
 	argv = prepend_options_from_env(&argc, orig_argv);
 	if (argv == NULL) {
 		ERR("Could not prepend options from command line\n");
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	for (;;) {
@@ -929,7 +929,7 @@ done:
 
 	free(config_paths);
 
-	return err >= 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+	return err >= 0 ? 0 : 1;
 }
 
 const struct kmod_cmd kmod_cmd_compat_modprobe = {

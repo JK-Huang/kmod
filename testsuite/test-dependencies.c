@@ -39,12 +39,12 @@ static int test_dependencies(const struct test *t)
 
 	ctx = kmod_new(NULL, NULL);
 	if (ctx == NULL)
-		return EXIT_FAILURE;
+		return 1;
 
 	err = kmod_module_new_from_name(ctx, "ext4", &mod);
 	if (err < 0) {
 		kmod_unref(ctx);
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	list = kmod_module_get_dependencies(mod);
@@ -66,13 +66,13 @@ static int test_dependencies(const struct test *t)
 
 	/* crc16, mbcache, jbd2 */
 	if (len != 3 || !crc16 || !mbcache || !jbd2)
-		return EXIT_FAILURE;
+		return 1;
 
 	kmod_module_unref_list(list);
 	kmod_module_unref(mod);
 	kmod_unref(ctx);
 
-	return EXIT_SUCCESS;
+	return 0;
 }
 static const struct test stest_dependencies = {
 	.name = "test_dependencies",

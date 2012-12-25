@@ -36,13 +36,13 @@ static int do_lsmod(int argc, char *argv[])
 
 	if (argc != 1) {
 		fprintf(stderr, "Usage: %s\n", argv[0]);
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	ctx = kmod_new(NULL, &null_config);
 	if (ctx == NULL) {
 		fputs("Error: kmod_new() failed!\n", stderr);
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	err = kmod_module_new_from_loaded(ctx, &list);
@@ -50,7 +50,7 @@ static int do_lsmod(int argc, char *argv[])
 		fprintf(stderr, "Error: could not get list of modules: %s\n",
 			strerror(-err));
 		kmod_unref(ctx);
-		return EXIT_FAILURE;
+		return 1;
 	}
 
 	puts("Module                  Size  Used by");
@@ -83,7 +83,7 @@ static int do_lsmod(int argc, char *argv[])
 	kmod_module_unref_list(list);
 	kmod_unref(ctx);
 
-	return EXIT_SUCCESS;
+	return 0;
 }
 
 const struct kmod_cmd kmod_cmd_compat_lsmod = {
