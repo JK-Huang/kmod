@@ -13,6 +13,6 @@ LINKS += kmod mod${x}
 .endfor
 
 CFLAGS += -I../libkmod -include ../config.h
-LDADD  += ../libkmod/libkmod.a
+LDADD  += ../libkmod/libkmod.a -lz -llzma
 
 .include <bsd.prog.mk>
