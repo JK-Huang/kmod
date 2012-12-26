@@ -1,3 +1,3 @@
-SUBDIR = tools libkmod
+SUBDIR = libkmod tools
 
 .include <bsd.subdir.mk>
