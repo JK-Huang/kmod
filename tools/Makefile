@@ -5,11 +5,11 @@ SRCS = depmod.c  insmod.c  kmod.c  log.c  lsmod.c  modinfo.c  modprobe.c  rmmod.
 MAN  = depmod.d.5 modprobe.d.5 modules.dep.5 depmod.8 insmod.8 lsmod.8 rmmod.8 modprobe.8 modinfo.8
 
 .for x in ls rm ins dep
-LINKS += kmod ${x}mod
+LINKS += ${BINDIR}kmod ${BINDIR}${x}mod
 .endfor
 
 .for x in info probe
-LINKS += kmod mod${x}
+LINKS += ${BINDIR}kmod ${BINDIR}mod${x}
 .endfor
 
 CFLAGS += -I../libkmod -include ../config.h
