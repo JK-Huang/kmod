@@ -79,3 +79,6 @@
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 /* #undef _FILE_OFFSET_BITS */
+
+#define SYSCONFDIR "/etc"
+#define LIBEXECDIR "/libx"
