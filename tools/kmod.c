@@ -25,6 +25,8 @@
 #include <libkmod.h>
 #include "kmod.h"
 
+char *program_invocation_short_name;
+
 static const char options_s[] = "+hV";
 static const struct option options[] = {
 	{ "help", no_argument, NULL, 'h' },
@@ -158,6 +160,8 @@ static int handle_kmod_compat_commands(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
 	int err;
+	
+	program_invocation_short_name = argv[0];
 
 	if (strcmp(program_invocation_short_name, "kmod") == 0)
 		err = handle_kmod_commands(argc, argv);

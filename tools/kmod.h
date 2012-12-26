@@ -36,4 +36,6 @@ extern const struct kmod_cmd kmod_cmd_compat_depmod;
 
 extern const struct kmod_cmd kmod_cmd_list;
 
+extern char *program_invocation_short_name;
+
 #include "log.h"
